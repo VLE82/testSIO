@@ -7,6 +7,11 @@ pipeline {
                 checkout scm
             }
         }
+        stage('Build') {
+            steps {
+                sh 'python -m pip install -r requirements.txt'
+            }
+        }
         stage('Unit Tests') {
             steps {
                 sh 'pytest .'
