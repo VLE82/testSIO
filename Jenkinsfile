@@ -18,8 +18,8 @@ pipeline {
                 script {
                     def testResult = sh(script: 'pytest .', returnStatus: true)
                     if (testResult == 0) {
-                        sh 'git tag Tests_OK'
-                        sh 'git push origin Tests_OK'
+                        sh 'git tag Unit_Tests_OK'
+                        sh 'git push origin Unit_Tests_OK'
                     }
                 }
             }
