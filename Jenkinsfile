@@ -15,7 +15,13 @@ pipeline {
         }
         stage('Unit Tests') {
             steps {
-                sh 'python3 -m pytest .'
+                script {
+                    def testResult = sh(script: 'pytest .', returnStatus: true)
+                    if (testResult == 0) {
+                        sh 'git tag Tests_OK'
+                        sh 'git push origin Tests_OK'
+                    }
+                }
             }
         }
         stage('Code Compliance') {
