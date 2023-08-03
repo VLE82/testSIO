@@ -5,21 +5,22 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+                sh 'python3 --version'
             }
         }
         stage('Build') {
             steps {
-                sh 'python -m pip install -r requirements.txt'
+                sh 'python3 -m pip install -r requirements.txt'
             }
         }
         stage('Unit Tests') {
             steps {
-                sh 'pytest .'
+                sh 'python3 -m pytest .'
             }
         }
         stage('Code Compliance') {
             steps {
-                sh 'pylint helloworld.py'
+                sh 'python3 -m pylint helloworld.py'
             }
         }
     }
