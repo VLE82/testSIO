@@ -22,7 +22,7 @@ pipeline {
                             def newCommitMessage = lastCommitMessage + "\n\nUnit Test OK"
                             sh "git commit --amend -m \"${newCommitMessage}\""
                             sh "git pull origin main"
-                            sh "git push origin HEAD:main"
+                            sh "git push --force origin HEAD:main"
                         }
                 }
             }
