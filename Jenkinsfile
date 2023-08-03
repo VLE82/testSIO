@@ -15,7 +15,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
 
-                def testResult = sh(script: 'pytest .', returnStatus: true)
+                def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
 
                 if (testResult == 0) {
                         def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
@@ -31,7 +31,7 @@ pipeline {
             }
         }
     }
-    
+
     post {
         success {
             echo 'Test OK'
