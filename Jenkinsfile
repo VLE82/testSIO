@@ -15,16 +15,13 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
+                    def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
-
+                    
                     if (testResult == 0) {
-                        sh 'git tag -a -f Unit_Tests -m "Passed"'
-                        sh 'git push origin Unit_Tests'
+                        sh 'git tag -a -f Unit_Tests_Passed -m "commit ${commitHash}"'
+                        sh 'git push origin Unit_Tests_Passed'
                         }
-                    else {
-                        sh 'git tag -a -f Unit_Tests -m "Failed"'
-                        sh 'git push origin Unit_Tests'
-            }
                 }
             }
         }
