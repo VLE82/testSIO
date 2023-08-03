@@ -19,7 +19,7 @@ pipeline {
 
                     if (testResult == 0) {
                             sh "git commit --allow-empty -m \"Unit tests passed\""
-                            sh "git push"
+                            sh "git push origin HEAD:main"
                         }
                 }
             }
