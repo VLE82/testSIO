@@ -19,9 +19,10 @@ pipeline {
 
                     if (testResult == 0) {
                             def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                            def newCommitMessage = lastCommitMessage + "Unit Test OK"
+                            def newCommitMessage = lastCommitMessage + "\n\nUnit Test OK"
                             sh "git commit --amend -m \"${newCommitMessage}\""
-                            sh 'git push origin HEAD:main'
+                            sh "git pull origin main"
+                            sh "git push origin HEAD:main"
                         }
                 }
             }
