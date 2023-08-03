@@ -18,9 +18,13 @@ pipeline {
                     def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
 
                     if (testResult == 0) {
-                            sh 'git tag Tests_OK'
-                            sh 'git push origin Tests_OK'
+                        sh 'git tag -a -f Unit_Tests -m "Passed"'
+                        sh 'git push origin Unit_Tests'
                         }
+                    else {
+                        sh 'git tag -a -f Unit_Tests -m "Failed"'
+                        sh 'git push origin Unit_Tests'
+            }
                 }
             }
         }
