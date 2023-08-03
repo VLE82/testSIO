@@ -15,13 +15,12 @@ pipeline {
         }
         stage('Unit Tests') {
             steps {
-                script {
-                    def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
-                    if (testResult == 0) {
-                        sh 'git tag Unit_Tests_OK'
-                        sh 'git push origin Unit_Tests_OK'
+                if (testResult == 0) {
+                        def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                        def newCommitMessage = lastCommitMessage + "\n\nUnit Test OK"
+                        sh "git commit --amend -m \"${newCommitMessage}\""
+                        sh 'git push'
                     }
-                }
             }
         }
         stage('Code Compliance') {
