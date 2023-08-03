@@ -18,11 +18,8 @@ pipeline {
                     def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
 
                     if (testResult == 0) {
-                            def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                            def newCommitMessage = lastCommitMessage + "\n\nUnit Test OK"
-                            sh "git commit --amend -m \"${newCommitMessage}\""
-                            sh "git pull --rebase origin main"
-                            sh "git push origin HEAD:main"
+                            sh "git commit --allow-empty -m \"Unit tests passed\""
+                            sh "git push"
                         }
                 }
             }
