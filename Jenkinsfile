@@ -16,7 +16,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
-                    def testResult = sh(script: 'pytest .', returnStatus: true)
+                    def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
                     if (testResult == 0) {
                         sh 'git tag Unit_Tests_OK'
                         sh 'git push origin Unit_Tests_OK'
