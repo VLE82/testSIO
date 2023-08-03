@@ -18,8 +18,8 @@ pipeline {
                     def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
 
                     if (testResult == 0) {
-                            sh "git commit --allow-empty -m \"Unit tests passed\""
-                            sh "git push origin HEAD:main"
+                            sh 'git tag Tests_OK'
+                            sh 'git push origin Tests_OK'
                         }
                 }
             }
