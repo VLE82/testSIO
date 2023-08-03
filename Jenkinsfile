@@ -5,7 +5,6 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
-                sh 'python3 --version'
             }
         }
         stage('Build') {
@@ -15,9 +14,12 @@ pipeline {
         }
         stage('Unit Tests') {
             steps {
+
+                def testResult = sh(script: 'pytest .', returnStatus: true)
+
                 if (testResult == 0) {
                         def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                        def newCommitMessage = lastCommitMessage + "\n\nUnit Test OK"
+                        def newCommitMessage = lastCommitMessage + "Unit Test OK"
                         sh "git commit --amend -m \"${newCommitMessage}\""
                         sh 'git push'
                     }
@@ -29,7 +31,7 @@ pipeline {
             }
         }
     }
-
+    
     post {
         success {
             echo 'Test OK'
