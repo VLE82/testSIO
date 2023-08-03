@@ -14,15 +14,16 @@ pipeline {
         }
         stage('Unit Tests') {
             steps {
+                script {
+                    def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
 
-                def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
-
-                if (testResult == 0) {
-                        def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                        def newCommitMessage = lastCommitMessage + "Unit Test OK"
-                        sh "git commit --amend -m \"${newCommitMessage}\""
-                        sh 'git push'
-                    }
+                    if (testResult == 0) {
+                            def lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                            def newCommitMessage = lastCommitMessage + "Unit Test OK"
+                            sh "git commit --amend -m \"${newCommitMessage}\""
+                            sh 'git push'
+                        }
+                }
             }
         }
         stage('Code Compliance') {
