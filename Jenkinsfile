@@ -40,10 +40,4 @@ pipeline {
             }
         }
     }
-    
-    post {
-        always {
-            cobertura coberturaReportFile: 'coverage.xml'
-        }
-    }
 }
