@@ -20,7 +20,7 @@ pipeline {
                     
                     if (testResult == 0) {
                         sh 'git tag -a -f Unit_Tests_Passed -m "commit ${commitHash}"'
-                        sh 'git push origin Unit_Tests_Passed'
+                        sh 'git push --force origin Unit_Tests_Passed'
                         }
                 }
             }
@@ -34,7 +34,7 @@ pipeline {
             
                     if (pylintResult == 0) {
                         sh 'git tag -a -f Code_Compliance_Passed -m "commit ${commitHash}"'
-                        sh 'git push origin Code_Compliance_Passed'
+                        sh 'git push --force origin Code_Compliance_Passed'
                     }
                 }
             }
