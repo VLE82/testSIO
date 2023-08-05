@@ -1,5 +1,3 @@
-def commitHash
-
 pipeline {
     agent any
 
@@ -17,7 +15,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
-                    commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     def testResult = sh(script: 'python3 -m pytest .', returnStatus: true)
                     
                     if (testResult == 0) {
@@ -29,12 +27,15 @@ pipeline {
         }
         stage('Code Compliance') {
             steps {
-                def pythonFiles = sh(script: 'find . -name "*.py"', returnStdout: true).trim()
-                def pylintResult = sh(script: "python3 -m pylint --fail-under=9 ${pythonFiles}", returnStatus: true)
-        
-                if (pylintResult == 0) {
-                    sh 'git tag -a -f Code_Compliance_Passed -m "commit ${commitHash}"'
-                    sh 'git push origin Code_Compliance_Passed'
+                script {
+                    def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                    def pythonFiles = sh(script: 'find . -name "*.py"', returnStdout: true).trim()
+                    def pylintResult = sh(script: "python3 -m pylint --fail-under=9 ${pythonFiles}", returnStatus: true)
+            
+                    if (pylintResult == 0) {
+                        sh 'git tag -a -f Code_Compliance_Passed -m "commit ${commitHash}"'
+                        sh 'git push origin Code_Compliance_Passed'
+                    }
                 }
             }
         }
