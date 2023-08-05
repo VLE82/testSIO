@@ -27,11 +27,18 @@ pipeline {
         }
         stage('Code Compliance') {
             steps {
-                sh 'python3 -m pylint helloworld.py'
+                def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                def pythonFiles = sh(script: 'find . -name "*.py"', returnStdout: true).trim()
+                def pylintResult = sh(script: "python3 -m pylint --fail-under=9 ${pythonFiles}", returnStatus: true)
+        
+                if (pylintResult == 0) {
+                    sh 'git tag -a -f Code_Compliance_Passed -m "commit ${commitHash}"'
+                    sh 'git push origin Code_Compliance_Passed'
+                }
             }
         }
     }
-
+    
     post {
         success {
             echo 'Test OK'
