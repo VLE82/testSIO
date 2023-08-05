@@ -42,12 +42,8 @@ pipeline {
     }
     
     post {
-        success {
-            echo 'Test OK'
-        }
-
-        failure {
-            echo 'Pipeline failed! Please check the logs.'
+        always {
+            cobertura coverageReportFile: 'coverage.xml'
         }
     }
 }
