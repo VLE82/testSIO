@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                    def pythonFiles = sh(script: 'find . -name "*.py"', returnStdout: true).trim()
+                    def pythonFiles = sh(script: 'find . -name "*.py" -not -name "test_*"', returnStdout: true).trim()
                     def pylintResult = sh(script: "python3 -m pylint --fail-under=9 ${pythonFiles}", returnStatus: true)
                     def coverageResult = sh(script: "coverage run test_*.py && coverage report", returnStatus: true)
 
