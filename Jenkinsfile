@@ -31,7 +31,7 @@ pipeline {
                     def commitHash = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                     def pythonFiles = sh(script: 'find . -name "*.py" -not -name "test_*"', returnStdout: true).trim()
                     def pylintResult = sh(script: "python3 -m pylint --fail-under=9 ${pythonFiles}", returnStatus: true)
-                    def coverageResult = sh(script: "python3 -m coverage run test_*.py && coverage report", returnStatus: true)
+                    def coverageResult = sh(script: "python3 -m coverage run test_*.py && python3 -m coverage report", returnStatus: true)
 
                     if (pylintResult == 0 && coverageResult == 0) {
                         sh 'git tag -a -f Code_Compliance_Passed -m "commit ${commitHash}"'
