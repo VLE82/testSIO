@@ -37,6 +37,8 @@ pipeline {
                         sh 'git tag -a -f Code_Compliance_Passed -m "commit ${commitHash}"'
                         sh 'git push --force origin Code_Compliance_Passed'
                     }
+
+                    step([$class: 'CoberturaPublisher', coberturaReportFile: 'coverage.xml'])
                 }
             }
         }
